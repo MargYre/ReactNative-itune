@@ -78,27 +78,6 @@ A React Native mobile application that allows you to search for artists and musi
    yarn start
    ```
 
-## 📂 Project Structure
-
-```
-itunes-search-app/
-├── App.js             # Application entry point
-├── src/
-│   ├── api/
-│   │   └── itunes.js  # iTunes API service
-│   ├── components/
-│   │   └── ResultItem.js  # Result item component
-│   ├── context/
-│   │   └── FavoritesContext.js  # Context for managing favorites
-│   ├── screens/
-│   │   ├── DetailScreen.js  # Detail screen
-│   │   ├── FavoritesScreen.js  # Favorites screen
-│   │   └── SearchScreen.js  # Search screen
-│   └── utils/
-│       └── storage.js  # Local storage utilities
-└── package.json
-```
-
 ## 🔍 Using the iTunes API
 
 The application uses Apple's public iTunes Search API:
