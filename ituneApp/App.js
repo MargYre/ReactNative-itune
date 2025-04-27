@@ -5,6 +5,9 @@ import { SearchHeader } from './components/SearchHeader';
 import { SearchInput } from './components/SearchInput';
 import { TypeToggle } from './components/TypeToggle';
 import { ResultsList } from './components/ResultsList';
+import { LibraryScreen } from './components/LibraryScreen';
+import { addToLibrary } from './utils/libraryManager';
+
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,9 +36,11 @@ const App = () => {
 
   const handleItemPress = (item) => {
     console.log('Selected item:', item);
-    // Nous implémenterons la navigation plus tard
   };
 
+  const handleLibraryItemPress = (item) => {
+    setLibrary((prevLibrary) => addToLibrary(prevLibrary, item));
+  };
   return (
     <View style={styles.container}>
       <SearchHeader />
