@@ -5,6 +5,7 @@ export default StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#f9f4ff',
+    marginTop: 50,
   },
   header: {
     alignItems: 'center',
