@@ -4,7 +4,7 @@ import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import styles from '../styles';
 import { saveToLibrary } from '../utils/storage';
 
-export const ResultCard = ({ item, onPress }) => {
+export const ResultCard = ({ item, onPress, onAdd, showAddButton }) => {
   const [isSaving, setIsSaving] = useState(false);
 
   const handleAddToLibrary = async () => {
@@ -48,6 +48,7 @@ export const ResultCard = ({ item, onPress }) => {
           </View>
         </View>
       </TouchableOpacity>
+     {showAddButton && (
       <TouchableOpacity 
         style={styles.addToLibraryButton}
         onPress={handleAddToLibrary}
@@ -57,6 +58,7 @@ export const ResultCard = ({ item, onPress }) => {
           {isSaving ? "..." : "+"}
         </Text>
       </TouchableOpacity>
+    )}
     </View>
   );
 };

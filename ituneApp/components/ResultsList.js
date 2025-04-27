@@ -12,6 +12,7 @@ export const ResultsList = ({ results, isLoading, onItemPress, onAddToLibrary })
           item={item}
           onPress={() => onItemPress(item)}
           onAdd={onAddToLibrary}
+          showAddButton={true}
         />
       )}
       contentContainerStyle={{ paddingBottom: 100 }}

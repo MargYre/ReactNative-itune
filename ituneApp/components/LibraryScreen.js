@@ -50,6 +50,7 @@ export const LibraryScreen = ({library}) => {
               key={item.trackId || item.artistId}
               item={item}
               onPress={() => handleItemPress(item)}
+              showAddButton={false}
             />
           ))
         )}
