@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import styles from './styles';
+import { SearchHeader } from './components/SearchHeader';
+import { SearchInput } from './components/SearchInput';
+import { TypeToggle } from './components/TypeToggle';
+import { ResultsList } from './components/ResultsList';
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,54 +31,20 @@ const App = () => {
     }
   };
 
+  const handleItemPress = (item) => {
+    console.log('Selected item:', item);
+    // Nous implémenterons la navigation plus tard
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>iTunes Explorer</Text>
-        <Text style={styles.subtitle}>Découvrez votre musique préférée</Text>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder={`Rechercher par ${searchType === 'artist' ? 'artiste... 🎤' : 'titre... 🎵'}`}
-          placeholderTextColor="#b39ddb"
-          value={searchTerm}
-          onChangeText={setSearchTerm}
-        />
-      </View>
-      
-      <View style={styles.buttonGroup}>
-        <TouchableOpacity
-          style={[
-            styles.button,
-            searchType === 'artist' && styles.buttonActive
-          ]}
-          onPress={() => setSearchType('artist')}
-        >
-          <Text style={[
-            styles.buttonText,
-            searchType === 'artist' && styles.buttonActiveText
-          ]}>
-            Artistes
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          style={[
-            styles.button,
-            searchType === 'track' && styles.buttonActive
-          ]}
-          onPress={() => setSearchType('track')}
-        >
-          <Text style={[
-            styles.buttonText,
-            searchType === 'track' && styles.buttonActiveText
-          ]}>
-            Titres
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <SearchHeader />
+      <SearchInput 
+        value={searchTerm} 
+        onChangeText={setSearchTerm} 
+        searchType={searchType} 
+      />
+      <TypeToggle searchType={searchType} setSearchType={setSearchType} />
       
       <TouchableOpacity
         style={styles.searchButton}
@@ -83,15 +53,11 @@ const App = () => {
         <Text style={styles.searchButtonText}>Rechercher</Text>
       </TouchableOpacity>
 
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#7e57c2" style={{ marginTop: 30 }} />
-      ) : (
-        results.length > 0 && (
-          <Text style={styles.loadingText}>
-            {results.length} résultats trouvés! 🎉
-          </Text>
-        )
-      )}
+      <ResultsList 
+        results={results} 
+        isLoading={isLoading} 
+        onItemPress={handleItemPress} 
+      />
     </View>
   );
 };
