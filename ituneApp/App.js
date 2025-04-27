@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import styles from './styles';
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,47 +18,35 @@ const App = () => {
       />
       
       <View style={styles.buttonGroup}>
-        <Button 
-          title="Artist" 
-          onPress={() => setSearchType('artist')} 
-          color={searchType === 'artist' ? 'blue' : 'gray'}
-        />
-        <Button 
-          title="Track" 
-          onPress={() => setSearchType('track')} 
-          color={searchType === 'track' ? 'blue' : 'gray'}
-        />
+        <TouchableOpacity
+          style={[
+            styles.button,
+            searchType === 'artist' && styles.buttonActive
+          ]}
+          onPress={() => setSearchType('artist')}
+        >
+          <Text style={styles.buttonText}>Artist</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          style={[
+            styles.button,
+            searchType === 'track' && styles.buttonActive
+          ]}
+          onPress={() => setSearchType('track')}
+        >
+          <Text style={styles.buttonText}>Track</Text>
+        </TouchableOpacity>
       </View>
       
-      <Button title="Search" onPress={() => console.log('Search:', searchTerm, searchType)} />
+      <TouchableOpacity
+        style={styles.searchButton}
+        onPress={() => console.log('Search:', searchTerm, searchType)}
+      >
+        <Text style={styles.searchButtonText}>Search</Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    marginTop: 50,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-  },
-  buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-});
 
 export default App;
