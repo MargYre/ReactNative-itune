@@ -14,6 +14,8 @@ const App = () => {
   const [searchType, setSearchType] = useState('artist');
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showLibrary, setShowLibrary] = useState(false);
+  const [library, setLibrary] = useState([]);
 
   const searchITunes = async () => {
     if (!searchTerm.trim()) return;
@@ -41,9 +43,30 @@ const App = () => {
   const handleLibraryItemPress = (item) => {
     setLibrary((prevLibrary) => addToLibrary(prevLibrary, item));
   };
+  if (showLibrary) {
+    return (
+      <View style={{ flex: 1 }}>
+        <LibraryScreen library={library} />
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => setShowLibrary(false)}
+        >
+          <Text style={styles.backButtonText}>Retour à la recherche</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <SearchHeader />
+      <View style={styles.libraryButtonContainer}>
+        <TouchableOpacity
+          style={styles.libraryAccessButton}
+          onPress={() => setShowLibrary(true)}
+        >
+          <Text style={styles.libraryAccessButtonText}>Voir la Bibliothèque</Text>
+        </TouchableOpacity>
+      </View>
       <SearchInput 
         value={searchTerm} 
         onChangeText={setSearchTerm} 

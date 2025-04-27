@@ -5,7 +5,7 @@ import styles from '../styles';
 import { getLibraryItems } from '../utils/storage';
 import { ResultCard } from './ResultCard';
 
-export const LibraryScreen = () => {
+export const LibraryScreen = ({library}) => {
   const [libraryItems, setLibraryItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
