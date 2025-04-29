@@ -1,37 +1,21 @@
-// components/LibraryScreen.js
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { View, Text, FlatList } from 'react-native';
 import styles from '../styles';
-import { getLibraryItems } from '../utils/storage';
 import { ResultCard } from './ResultCard';
 
-export const LibraryScreen = ({library}) => {
-  const [libraryItems, setLibraryItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    loadLibraryItems();
-  }, []);
-
-  const loadLibraryItems = async () => {
-    setLoading(true);
-    const items = await getLibraryItems();
-    setLibraryItems(items);
-    setLoading(false);
+export const LibraryScreen = ({ library, setLibrary }) => {
+  const handleRatingChange = (item, newRating) => {
+    const updatedLibrary = library.map((entry) =>
+      (entry.trackId === item.trackId || entry.artistId === item.artistId)
+        ? { ...entry, rating: newRating }
+        : entry
+    );
+    setLibrary(updatedLibrary);
   };
 
   const handleItemPress = (item) => {
     console.log('Item sélectionné dans la bibliothèque:', item);
-    // Implémentation future pour afficher les détails
   };
-
-  if (loading) {
-    return (
-      <View style={[styles.container, { justifyContent: 'center' }]}>
-        <ActivityIndicator size="large" color="#7e57c2" />
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
@@ -39,22 +23,25 @@ export const LibraryScreen = ({library}) => {
         <Text style={styles.title}>Ma Bibliothèque</Text>
       </View>
 
-      <ScrollView style={{ flex: 1 }}>
-        {libraryItems.length === 0 ? (
-          <Text style={styles.noResults}>
-            Votre bibliothèque est vide. Ajoutez des éléments depuis la recherche.
-          </Text>
-        ) : (
-          libraryItems.map(item => (
+      {library.length === 0 ? (
+        <Text style={styles.noResults}>
+          Votre bibliothèque est vide. Ajoutez des éléments depuis la recherche.
+        </Text>
+      ) : (
+        <FlatList
+          data={library}
+          keyExtractor={(item) => item.trackId?.toString() || item.artistId?.toString()}
+          renderItem={({ item }) => (
             <ResultCard
-              key={item.trackId || item.artistId}
               item={item}
               onPress={() => handleItemPress(item)}
               showAddButton={false}
+              onRate={handleRatingChange}
             />
-          ))
-        )}
-      </ScrollView>
+          )}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        />
+      )}
     </View>
   );
 };

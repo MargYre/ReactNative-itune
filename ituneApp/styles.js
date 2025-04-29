@@ -98,8 +98,7 @@ export default StyleSheet.create({
     marginTop: 20,
     fontSize: 16,
   },
-  // Ajoutez à votre fichier styles.js
-resultCardContainer: {
+  resultCardContainer: {
   flexDirection: 'row',
   alignItems: 'center',
   marginBottom: 15,
@@ -136,7 +135,6 @@ addToLibraryButtonText: {
   fontSize: 24,
   fontWeight: 'bold',
 },
-// Ajoutez à votre fichier styles.js
 libraryButtonContainer: {
   alignItems: 'flex-end',
   marginBottom: 10,

@@ -1,39 +1,95 @@
-// utils/storage.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const LIBRARY_STORAGE_KEY = 'itunes_user_library';
+const LIBRARY_KEY = 'itunes_library';
+
+export const getLibrary = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem(LIBRARY_KEY);
+    return jsonValue != null ? JSON.parse(jsonValue) : [];
+  } catch (e) {
+    console.error('Error reading library:', e);
+    return [];
+  }
+};
 
 export const saveToLibrary = async (item) => {
   try {
-    // Récupérer la bibliothèque existante
-    const existingData = await AsyncStorage.getItem(LIBRARY_STORAGE_KEY);
-    const libraryItems = existingData ? JSON.parse(existingData) : [];
+    const library = await getLibrary();
     
-    // Vérifier si l'élément existe déjà
-    const itemId = item.trackId || item.artistId;
-    const exists = libraryItems.some(i => 
-      (i.trackId === itemId || i.artistId === itemId)
+    const exists = library.some(
+      (entry) => 
+        (entry.trackId && entry.trackId === item.trackId) || 
+        (entry.artistId && entry.artistId === item.artistId)
     );
     
-    // Si l'élément n'existe pas, l'ajouter
     if (!exists) {
-      libraryItems.push(item);
-      await AsyncStorage.setItem(LIBRARY_STORAGE_KEY, JSON.stringify(libraryItems));
+      library.push(item);
+      await AsyncStorage.setItem(LIBRARY_KEY, JSON.stringify(library));
       return true;
+    } else {
+      const updatedLibrary = library.map(entry => 
+        (entry.trackId === item.trackId || entry.artistId === item.artistId)
+          ? { ...entry, ...item }
+          : entry
+      );
+      await AsyncStorage.setItem(LIBRARY_KEY, JSON.stringify(updatedLibrary));
+      return false;
     }
-    return false;
-  } catch (error) {
-    console.error('Erreur lors de la sauvegarde:', error);
+  } catch (e) {
+    console.error('Error saving to library:', e);
     return false;
   }
 };
 
-export const getLibraryItems = async () => {
+export const updateLibraryItem = async (item, updates) => {
   try {
-    const data = await AsyncStorage.getItem(LIBRARY_STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
-  } catch (error) {
-    console.error('Erreur lors de la récupération de la bibliothèque:', error);
-    return [];
+    const library = await getLibrary();
+    
+    const updatedLibrary = library.map(entry => 
+      (entry.trackId === item.trackId || entry.artistId === item.artistId)
+        ? { ...entry, ...updates }
+        : entry
+    );
+    
+    await AsyncStorage.setItem(LIBRARY_KEY, JSON.stringify(updatedLibrary));
+    return true;
+  } catch (e) {
+    console.error('Error updating library item:', e);
+    return false;
+  }
+};
+
+export const removeFromLibrary = async (item) => {
+  try {
+    const library = await getLibrary();
+    const filteredLibrary = library.filter(
+      (entry) => 
+        !(entry.trackId === item.trackId || entry.artistId === item.artistId)
+    );
+    
+    await AsyncStorage.setItem(LIBRARY_KEY, JSON.stringify(filteredLibrary));
+    return true;
+  } catch (e) {
+    console.error('Error removing from library:', e);
+    return false;
+  }
+};
+
+export const saveRating = async (item, rating) => {
+  try {
+    const library = await getLibrary();
+    const itemExists = library.some(
+      (entry) => 
+        (entry.trackId === item.trackId || entry.artistId === item.artistId)
+    );
+    
+    if (itemExists) {
+      return await updateLibraryItem(item, { rating });
+    } else {
+      return await saveToLibrary({ ...item, rating });
+    }
+  } catch (e) {
+    console.error('Error saving rating:', e);
+    return false;
   }
 };
