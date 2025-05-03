@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import styles from '../styles';
+import styles from '../style/components/styles';
 import { ResultCard } from './ResultCard';
 
 export const ResultsList = ({ 

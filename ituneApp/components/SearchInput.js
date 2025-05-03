@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TextInput } from 'react-native';
-import styles from '../styles';
+import styles from '../style/components/styles';
 
 export const SearchInput = ({ value, onChangeText, searchType }) => (
   <View style={styles.inputContainer}>

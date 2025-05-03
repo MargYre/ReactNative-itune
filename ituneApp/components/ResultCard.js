@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
-import styles from '../styles';
+import styles from '../style/components/styles';
 import { saveToLibrary } from '../utils/storage';
-import { StarRating } from './StarRating';
+import { StarRating } from './rating/StarRating';
 
 export const ResultCard = ({ item, onPress, onAdd, onRate, showAddButton }) => {
   const [isSaving, setIsSaving] = useState(false);
