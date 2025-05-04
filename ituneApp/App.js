@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import styles from './styles';
+import styles from './style/components/styles';
 
 import { SearchHeader } from './components/SearchHeader';
 import { SearchInput } from './components/SearchInput';
